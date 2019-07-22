@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Js Forms</title>
+    <style>
+        select, input {
+            width: 150px;
+        }
+
+        .error input,
+        .error textarea {
+            border: 1px solid red;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .label {
+            display: inline-block;
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <div>
+            <p class="label">От кого</p>
+            <input type="text" name="from">
+        </div>
+        <div>
+            <p class="label">Пароль</p>
+            <input type="password" name="password">
+        </div>
+        <div>
+            <p class="label">Повторите пароль</p>
+            <input type="password" name="password2">
+        </div>
+        <div>
+            <p class="label">Куда</p>
+            <select name="to" size="1">
+                <option></option>
+                <option value="1">Отдел снабжения</option>
+                <option value="2">Транспортный отдел</option>
+            </select>
+        </div>
+        <p>Сообщение:</p>
+        <label style="display: block">
+            <textarea name="message" style="display:block;width:400px;height:80px"></textarea>
+        </label>
+
+        <input type="button" onclick="validate(this.form)" value="Проверить">
+    </form>
+    <script>
+        function validate(form) {
+            let elems = form.elements;
+
+            resetError(elems.from.parentNode);
+            if (!elems.from.value) {
+                showError(elems.from.parentNode, ' Укажите от кого.');
+            }
+
+            resetError(elems.password.parentNode);
+            if (!elems.password.value) {
+                showError(elems.password.parentNode, ' Укажите пароль.');
+            } else if (elems.password.value != elems.password2.value) {
+            showError(elems.password.parentNode, ' Пароли не совпадают.');
+            }
+
+            resetError(elems.to.parentNode);
+            if (!elems.to.value) {
+                showError(elems.to.parentNode, ' Укажите, куда.');
+            }
+
+            resetError(elems.message.parentNode);
+            if (!elems.message.value) {
+                showError(elems.message.parentNode, ' Отсутствует текст.');
+            }
+        }
+        function showError(container, errorMessage) {
+            container.className = 'error';
+            let msgElem = document.createElement('span');
+            msgElem.className = "error-message";
+            msgElem.innerHTML = errorMessage;
+            container.appendChild(msgElem);
+        }
+
+        function resetError(container) {
+            container.className = '';
+            if (container.lastChild.className == "error-message") {
+                container.removeChild(container.lastChild);
+            }
+        }
+    </script>
+</body>
+</html>
